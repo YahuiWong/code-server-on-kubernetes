@@ -79,7 +79,8 @@ RUN sudo apt-get update; \
     sudo apt-get install -y dotnet-sdk-5.0 \
 && rm -rf /var/lib/apt/lists/*
 
-RUN locale-gen en_US.UTF-8
+RUN echo "Asia/Shanghai" > /etc/timezone \ 
+&& locale-gen en_US.UTF-8
 # We unfortunately cannot use update-locale because docker will not use the env variables
 # configured in /etc/default/locale so we need to set it manually.
 ENV LC_ALL=en_US.UTF-8
