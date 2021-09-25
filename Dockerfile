@@ -61,7 +61,10 @@ RUN git clone https://github.com/ahmetb/kubectx /opt/kubectx && \
 
 # nodejs
 RUN NODE_VERSION=14 && \
-curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash - \
+&& sudo apt-get install -y nodejs \
+&& rm -rf /var/lib/apt/lists/* \
+&& sudo npm i -g rimraf typescript cnpm ts-node 
 
 # golang
 
@@ -112,8 +115,7 @@ RUN echo "export PATH=$PATH:/usr/local/go/bin" >> /home/coder/.bashrc
 RUN git config --global core.autocrlf false \
 && git config --global credential.helper store
 
-# node
-RUN sudo npm i -g yarn cnpm typescript ts-node rimraf
+
 
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
         ~/.fzf/install
