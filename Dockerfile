@@ -1,6 +1,14 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
-RUN apt-get update && apt-get install -y \
+# RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
+# && sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list 
+
+RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
+&& sed -i 's/security.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list 
+
+
+RUN apt-get update\
+&& apt-get install -y \
     openssl \
     net-tools \
     git \
@@ -10,7 +18,10 @@ RUN apt-get update && apt-get install -y \
     vim \
     curl \
     wget \
-    bash-completion
+    bash-completion \
+    python2 python3 python3-pip python-is-python3  \
+    && rm -rf /var/lib/apt/lists/*
+
 
 RUN chsh -s /bin/bash
 ENV SHELL=/bin/bash
@@ -47,6 +58,26 @@ RUN git clone https://github.com/ahmetb/kubectx /opt/kubectx && \
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
     ~/.fzf/install
 
+# nodejs
+RUN NODE_VERSION=14 && \
+curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
+
+# golang
+
+RUN RUN GOLANG_VERSION=1.14.2 && \
+wget -c https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
+
+# dotnet 
+
+RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+sudo dpkg -i packages-microsoft-prod.deb \
+rm packages-microsoft-prod.deb
+RUN sudo apt-get update; \
+    sudo apt-get install -y apt-transport-https && \
+    sudo apt-get update && \
+    sudo apt-get install -y dotnet-sdk-5.0 \
+&& rm -rf /var/lib/apt/lists/*
+
 RUN locale-gen en_US.UTF-8
 # We unfortunately cannot use update-locale because docker will not use the env variables
 # configured in /etc/default/locale so we need to set it manually.
@@ -63,6 +94,16 @@ RUN chmod g+rw /home && \
     chown -R coder:coder /home/coder/workspace;
 
 USER coder
+
+# poetry
+RUN pip3 install poetry -i https://pypi.tuna.tsinghua.edu.cn/simple && \
+    # cd /usr/local/bin && \
+    # ln -s /opt/poetry/bin/poetry && \
+    # source $HOME/.poetry/env && \
+    $HOME/.local/bin/poetry config virtualenvs.create false
+
+# gopath
+RUN ecoh "export PATH=$PATH:/usr/local/go/bin" >> /home/coder/.bashrc
 
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
         ~/.fzf/install
