@@ -34,7 +34,7 @@ RUN ARCH=amd64 && \
     mkdir -p /etc/fixuid && \
     printf "user: coder\ngroup: coder\n" > /etc/fixuid/config.yml
 
-RUN CODE_SERVER_VERSION=3.3.1 && \
+RUN CODE_SERVER_VERSION=3.12.0 && \
     curl -sSOL https://github.com/cdr/code-server/releases/download/v${CODE_SERVER_VERSION}/code-server_${CODE_SERVER_VERSION}_amd64.deb && \
     sudo dpkg -i code-server_${CODE_SERVER_VERSION}_amd64.deb
 
