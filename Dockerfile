@@ -73,10 +73,10 @@ wget -c https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz -O - | s
 RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
 && sudo dpkg -i packages-microsoft-prod.deb \
 && rm packages-microsoft-prod.deb
-RUN sudo apt-get update; \
+RUN  sudo apt-get update; \
     sudo apt-get install -y apt-transport-https && \
     sudo apt-get update && \
-    sudo apt-get install -y dotnet-sdk-5.0 \
+    sudo DEBIAN_FRONTEND=noninteractive  apt-get install -y dotnet-sdk-5.0 \
 && rm -rf /var/lib/apt/lists/*
 
 RUN echo "Asia/Shanghai" > /etc/timezone \ 
