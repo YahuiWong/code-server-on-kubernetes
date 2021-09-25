@@ -112,6 +112,9 @@ RUN echo "export PATH=$PATH:/usr/local/go/bin" >> /home/coder/.bashrc
 RUN git config --global core.autocrlf false \
 && git config --global credential.helper store
 
+# node
+RUN sudo npm i -g yarn cnpm typescript ts-node rimraf
+
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
         ~/.fzf/install
 
