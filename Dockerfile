@@ -19,6 +19,7 @@ RUN apt-get update\
     curl \
     wget \
     bash-completion \
+    # kotlin gradle maven htop \
     python2 python3 python3-pip python-is-python3  \
     && rm -rf /var/lib/apt/lists/*
 
@@ -64,14 +65,14 @@ curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
 
 # golang
 
-RUN RUN GOLANG_VERSION=1.14.2 && \
+RUN GOLANG_VERSION=1.17.1 && \
 wget -c https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
 
 # dotnet 
 
 RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
-sudo dpkg -i packages-microsoft-prod.deb \
-rm packages-microsoft-prod.deb
+&& sudo dpkg -i packages-microsoft-prod.deb \
+&& rm packages-microsoft-prod.deb
 RUN sudo apt-get update; \
     sudo apt-get install -y apt-transport-https && \
     sudo apt-get update && \
@@ -104,6 +105,11 @@ RUN pip3 install poetry -i https://pypi.tuna.tsinghua.edu.cn/simple && \
 
 # gopath
 RUN ecoh "export PATH=$PATH:/usr/local/go/bin" >> /home/coder/.bashrc
+
+# git env
+
+RUN git config --global core.autocrlf false \
+&& git config --global credential.helper store
 
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
         ~/.fzf/install
