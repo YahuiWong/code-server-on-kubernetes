@@ -105,7 +105,7 @@ RUN pip3 install poetry -i https://pypi.tuna.tsinghua.edu.cn/simple && \
     $HOME/.local/bin/poetry config virtualenvs.create false
 
 # gopath
-RUN ecoh "export PATH=$PATH:/usr/local/go/bin" >> /home/coder/.bashrc
+RUN echo "export PATH=$PATH:/usr/local/go/bin" >> /home/coder/.bashrc
 
 # git env
 
