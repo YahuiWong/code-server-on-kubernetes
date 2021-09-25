@@ -101,13 +101,9 @@ RUN chmod g+rw /home && \
 USER coder
 
 # poetry
-RUN pip3 install poetry -i https://pypi.tuna.tsinghua.edu.cn/simple && \
-    # cd /usr/local/bin && \
-    # ln -s /opt/poetry/bin/poetry && \
-    # source $HOME/.poetry/env && \
-    $HOME/.local/bin/poetry config virtualenvs.create false \
-    echo "/home/coder/.local/bin" >> /home/coder/.bashrc
-
+RUN pip3 install poetry -i https://pypi.tuna.tsinghua.edu.cn/simple  \
+    && $HOME/.local/bin/poetry config virtualenvs.create false \
+    && echo "export PATH=$PATH:/home/coder/.local/bin" >> /home/coder/.bashrc
 # gopath
 RUN echo "export PATH=$PATH:/usr/local/go/bin" >> /home/coder/.bashrc
 
