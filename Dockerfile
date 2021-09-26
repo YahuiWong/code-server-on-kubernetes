@@ -102,7 +102,7 @@ USER coder
 
 # poetry
 RUN pip3 install poetry -i https://pypi.tuna.tsinghua.edu.cn/simple  \
-    && $HOME/.local/bin/poetry config virtualenvs.create false \
+    # && $HOME/.local/bin/poetry config virtualenvs.create false \
     && echo "export PATH=\$PATH:/home/coder/.local/bin" >> /home/coder/.bashrc
 # gopath
 RUN echo "export PATH=\$PATH:/usr/local/go/bin" >> /home/coder/.bashrc
